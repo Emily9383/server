@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+  <link rel="shortcut icon" href="../../assets/icon/Logo.ico" type="image/x-icon">
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Voltix | Servidores</title>
+
+  <link rel="stylesheet" href="../../css/dashboard-layout.css">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+
+  <script src="../../js/sessao.js"></script>
+  <script src="../../js/alerta.js"></script>
+  <script src="../../js/toast.js"></script>
+  <script src="./script.js"></script>
+
+</head>
+
+<body onload="buscarUsuarios(); carregarInformacoesUsuario(); loadCompanyName();">
+  <aside class="navbar">
+    <div class="logo">
+      <img src="../../assets/icon/Logo.png">
+      <span>Voltix</span>
+    </div>
+
+
+    <nav class="navbar-items">
+      <a href="../" class="item">
+        <i class="ph ph-chart-line"></i>
+        Dashboard
+      </a>
+      <a href="../users" class="item">
+        <i class="ph ph-users-three"></i>
+        Funcionários
+      </a>
+      <a href="./" class="item active">
+        <i class="ph ph-hard-drives"></i>
+        Servidores
+      </a>
+    </nav>
+
+
+    <div class="user-data">
+      <div class="icon" id="avatarUsuario"></div>
+      <div class="info">
+        <span class="name" id="nomeUsuario"></span>
+        <span class="email" id="emailUsuario"></span>
+      </div>
+
+      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'">
+      </i>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="page-content">
+      <div class="page-title">
+
+        <div>
+          <h1>Servidores</h1>
+          <h2 id="companyName">
+            @ Empresa
+          </h2>
+        </div>
+        <button class="add-user-button" onclick="abrirAddUser()">
+           +
+        </button>
+      </div>
+
+      <hr>
+
+      <div class="user-title">
+        <h1>Pesquisar Servidor</h1>
+      </div>
+
+      <div class="search-area">
+        <input type="text" id="input_pesquisa" placeholder="Insira a região">
+
+        <button onclick="Pesquisar()">
+          <i class="ph ph-magnifying-glass"></i>
+          Pesquisar
+        </button>
+      </div>
+
+
+      <div id="listarUsuarios">
+        <div class="user-list-header">
+          <span>Região</span>
+          <span>CPU</span>
+          <span>RAM</span>
+          <span>Disco</span>
+          <span>Perda de pacotes</span>
+          <span>Rede Enviada</span>
+          <span>Rede Recebida</span>
+          <span>Status</span>
+          <span>Atualizar</span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- CRIAR NOVO SERVIDOR -->
+
+    <div class="geral" id="geral_addUser">
+
+      <div id="addUser">
+
+        <div class="topButtons">
+          <button class="sair" onclick="sairAddUser()"><img src="../../assets/imgs/icone_sair.png" alt=""
+              width="40rem"></button>
+          <div id="column">
+            <span id="title">Cadastrar uma nova instância</span>
+            <span id="caption">Informe os dados instância e os limites de uso de cada componente </span>
+          </div>
+          <button id="register" onclick="cadastrar()">Cadastrar</button>
+
+        </div>
+
+        <div class="group">
+          <div class="campo">
+            <label>Região</label>
+            <input type="text">
+          </div>
+
+          <div class="campo">
+            <label>MAC Address</label>
+            <select>
+              <option>00:1A:2B:3C:4D:5E</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label>Categoria</label>
+            <select>
+              <option>00:1A:2B:3C:4D:5E</option>
+            </select>
+          </div>
+        </div>
+
+        <h2 id="type-title">Limites de uso (mínimo e máximo)</h2>
+
+        <div class="cards-container">
+          <!-- Cartão Ativo (ex: CPU) -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">CPU</span>
+              <input type="checkbox" class="card-checkbox" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0%" />
+              </div>
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="100%" />
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">RAM</span>
+              <input type="checkbox" class="card-checkbox" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0%" />
+              </div>
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="100%" />
+              </div>
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Disco</span>
+              <input type="checkbox" class="card-checkbox" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0%" />
+              </div>
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="100%" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="type-title">Rede</h2>
+        <div class="cards-container">
+          <!--Ativo-->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Perda de pacote</span>
+              <input type="checkbox" class="card-checkbox" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0%" />
+              </div>
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="100%" />
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Rede Recebida</span>
+              <input type="checkbox" class="card-checkbox" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0%" />
+              </div>
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="100%" />
+              </div>
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Rede Enviada</span>
+              <input type="checkbox" class="card-checkbox" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0%" />
+              </div>
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="100%" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <!-- FIM NOVO SERVIDOR -->
+
+
+
+
+    <!-- ALTERAR INFORMAÇÕES DO SERVIDOR -->
+    <div class="geral" id="geral_editor">
+
+      <div id="editor">
+
+        <div class="topButtons">
+          <button class="sair" id="sairEditor" onclick="sairEditor()">
+            <i class="ph ph-x"></i>
+          </button>
+        </div>
+
+        <h2>Atualizar Informações</h2>
+        <span class="modal-description">
+          Escolha qual informação deseja alterar
+        </span>
+
+        <div class="update-options">
+          <button class="update-option" onclick="mostrarAlterarNome()">
+            <i class="ph ph-user"></i>
+            <div>
+              <strong>Nome</strong>
+            </div>
+          </button>
+
+          <button class="update-option" onclick="mostrarAlterarEmail()">
+            <i class="ph ph-envelope"></i>
+            <div>
+              <strong>E-mail</strong>
+            </div>
+          </button>
+
+          <button class="update-option" onclick="mostrarAlterarCargo()">
+            <i class="ph ph-briefcase"></i>
+            <div>
+              <strong>Cargo</strong>
+            </div>
+          </button>
+        </div>
+
+        <div class="midInputs" id="alterarNomeArea" style="display: none;">
+          <span>Novo nome:</span>
+          <input type="text" id="novoNome" placeholder="Digite o novo nome">
+          <button class="confirm-update" onclick="mudarNome()">
+            Atualizar Nome
+          </button>
+        </div>
+
+        <div class="midInputs" id="alterarEmailArea" style="display: none;">
+          <span>Novo e-mail:</span>
+          <input type="email" id="novoEmail" placeholder="Digite o novo e-mail">
+          <button class="confirm-update" onclick="mudarEmail()">
+            Atualizar E-mail
+          </button>
+        </div>
+
+        <div class="midInputs" id="alterarCargoArea" style="display: none;">
+          <span>Novo Cargo:</span>
+          <select id="novoCargo">
+            <option value="">Selecione um cargo</option>
+            <option value="1">Gestor de TI</option>
+            <option value="2">Analista NOC</option>
+          </select>
+          <button class="confirm-update" onclick="mudarCargo()">
+            Atualizar Cargo
+          </button>
+        </div>
+
+        <div class="functionsButtons">
+          <button id="deletarUsuario" onclick="deletarUsuario()">
+            Apagar Usuário
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- FECHAR ATUALIZAR SERVIDOR -->
+
+    <div id="toast-container"></div>
+
+  </main>
+</body>
+
+</html>
